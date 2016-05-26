@@ -57,7 +57,11 @@ class Foreman::Engine::CLI < Foreman::Engine
     data.to_s.lines.map(&:chomp).each do |message|
       output  = ""
       output += $stdout.color(@colors[name.split(".").first].to_sym)
-      output += "#{Time.now.strftime("%H:%M:%S")} #{pad_process_name(name)} | "
+      if options[:narrow]
+        output_text = "#{name} | "
+      else
+        output_text = "#{Time.now.strftime("%H:%M:%S")} #{pad_process_name(name)} | "
+      end
       output += $stdout.color(:reset)
       output += message
       $stdout.puts output
